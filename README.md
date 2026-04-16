@@ -42,30 +42,35 @@ The **NE555 timer** operates in **astable mode**, continuously switching between
 👉 **Tinkercad Schematic (NE555 only):**
 [https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo](https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo)
 
-```
-        VCC
-         |
-        [R1]
-         |
-         +-------> Pin 7 (Discharge)
-         |
-        [Potentiometer]
-         |
-         +-------> Pin 6 (Threshold)
-         |         Pin 2 (Trigger)
-         |
-        [C]
-         |
-        GND
+### NE555 Pin Connections (Clean Layout)
 
-Pin 1 → GND
-Pin 2 → Threshold
-Pin 3 → OUTPUT → ESP32 GPIO
-Pin 4 → VCC
-Pin 5 → (optional capacitor to GND)
-Pin 6 → Threshold
-Pin 7 → Discharge
-Pin 8 → VCC
+```
+Pin 1  → GND
+Pin 2  → Connected to Pin 6 (Trigger)
+Pin 3  → OUTPUT → ESP32 GPIO 14
+Pin 4  → VCC
+Pin 5  → Optional capacitor to GND
+Pin 6  → Connected to Pin 2 (Threshold)
+Pin 7  → Discharge → Resistor → VCC
+Pin 8  → VCC
+```
+
+### Timing Components
+
+```
+VCC
+ |
+[R1]
+ |
+ +------ Pin 7 (Discharge)
+ |
+[Potentiometer]
+ |
+ +------ Pin 6 & Pin 2
+ |
+[C]
+ |
+GND
 ```
 
 -------> Pin 7 (Discharge)
@@ -90,6 +95,27 @@ Pin 8 → VCC
 
 ```
 
+-------> Pin 7 (Discharge)
+         |
+        [Potentiometer]
+         |
+         +-------> Pin 6 (Threshold)
+         |         Pin 2 (Trigger)
+         |
+        [C]
+         |
+        GND
+
+Pin 1 → GND
+Pin 2 → Threshold
+Pin 3 → OUTPUT → ESP32 GPIO
+Pin 4 → VCC
+Pin 5 → (optional capacitor to GND)
+Pin 6 → Threshold
+Pin 7 → Discharge
+Pin 8 → VCC
+```
+
 ---
 
 ## 🖼️ Circuit Preview
@@ -100,67 +126,75 @@ Pin 8 → VCC
 
 ## 📊 Signal Characteristics
 
-| Parameter     | Description                  |
-|--------------|-----------------------------|
-| Signal Type  | Square Wave (PWM)           |
-| Voltage      | 0V – VCC                    |
-| Frequency    | Adjustable                  |
-| Duty Cycle   | Adjustable                  |
+| Parameter   | Description       |
+| ----------- | ----------------- |
+| Signal Type | Square Wave (PWM) |
+| Voltage     | 0V – VCC          |
+| Frequency   | Adjustable        |
+| Duty Cycle  | Adjustable        |
 
 ---
 
 ## 🔗 ESP32 Connection
 
 ### Pin Mapping
-- **VCC** → 3.3V or 5V (depending on setup)
-- **GND** → Common ground (shared with NE555)
-- **GPIO 14** → NE555 Output (signal input)
-- **GPIO 13** → Freeze function (hold measurement)
-- **GPIO 12** → Zoom function (adjust display scale)
-- **GPIO 21 (SDA)** → OLED
-- **GPIO 22 (SCL)** → OLED
+
+* **VCC** → 3.3V or 5V (depending on setup)
+* **GND** → Common ground (shared with NE555)
+* **GPIO 14** → NE555 Output (signal input)
+* **GPIO 13** → Freeze function (hold measurement)
+* **GPIO 12** → Zoom function (adjust display scale)
+* **GPIO 21 (SDA)** → OLED
+* **GPIO 22 (SCL)** → OLED
 
 ### Notes
-- Ensure common GND between NE555 and ESP32
-- If NE555 runs at 5V, use a voltage divider before GPIO 14
-- Buttons (freeze/zoom) should use pull-down or pull-up resistors
+
+* Ensure common GND between NE555 and ESP32
+* If NE555 runs at 5V, use a voltage divider before GPIO 14
+* Buttons (freeze/zoom) should use pull-down or pull-up resistors
 
 ---
 
 ## 🚀 Use Cases
-- PWM signal testing
-- Microcontroller interrupt testing
-- Frequency measurement projects
-- Duty cycle analysis
+
+* PWM signal testing
+* Microcontroller interrupt testing
+* Frequency measurement projects
+* Duty cycle analysis
 
 ---
 
 ## 📁 Project Structure
 
 ```
-
 .
 ├── README.md
 ├── images/
 │   └── circuit.png
 ├── src/
 │   └── esp32_code.ino
-
 ```
 
 ---
 
 ## ⚠️ Notes
-- ESP32 operates at **3.3V logic**
-- If NE555 runs at 5V, use a voltage divider
-- Add decoupling capacitor for stable operation
+
+* ESP32 operates at **3.3V logic**
+* If NE555 runs at 5V, use a voltage divider
+* Add decoupling capacitor for stable operation
 
 ---
 
 ## 📜 License
+
 This project is licensed under the MIT License.
 
 ---
+
+## 👨‍💻 Author
+
+Created as an electronics & embedded systems project using NE555 and ESP32.
+
 
 ## 👨‍💻 Author
 Created as an electronics & embedded systems project using NE555 and ESP32.
