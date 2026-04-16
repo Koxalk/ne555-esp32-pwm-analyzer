@@ -1,222 +1,180 @@
-# ⚡📡 ESP32 Signal Lab Suite
+# NE555 PWM Signal Generator
 
-## NE555 PWM Generator + Digital Oscilloscope Ecosystem
+![License](https://img.shields.io/badge/license-MIT-green)
+![Platform](https://img.shields.io/badge/platform-ESP32-blue)
+![Electronics](https://img.shields.io/badge/type-Analog%20%2B%20Digital-orange)
+![Status](https://img.shields.io/badge/status-Active-success)
 
-<p align="center">
+## 📖 Overview
 
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-ESP32-blue?style=for-the-badge)
-![Type](https://img.shields.io/badge/type-Signal%20Processing%20Lab-orange?style=for-the-badge)
-![Status](https://img.shields.io/badge/status-Active-success?style=for-the-badge)
+This project demonstrates a simple **NE555 timer configured in astable mode** to generate a **PWM (square wave) signal**.
 
-</p>
+The generated signal can be used for testing and is read by a microcontroller (e.g., ESP32) to measure:
 
----
+* Frequency (Hz)
+* Duty Cycle (%)
 
-## 🌑 Overview
-
-This project is a complete **embedded signal analysis ecosystem** built around the ESP32.
-
-It combines:
-
-* ⚡ **NE555 PWM Signal Generator** (signal source)
-* 📈 **ESP32 Digital Oscilloscope** (signal visualization & measurement)
-
-Together they form a low-cost lab for learning, testing, and analyzing electronic signals.
-
-<p align="center">
-Signal Generation → Capture → Processing → Visualization
-</p>
+An OLED display can be used to visualize the signal.
 
 ---
-
-## 🧾 Table of Contents
-
-* Overview
-* System Architecture
-* NE555 Signal Generator
-* ESP32 Oscilloscope
-* Integration Setup
-* Signal Flow
-* Pin Mapping
-* Use Cases
-* Limitations
-* Future Improvements
-* Author
-
----
-
-# 🧠 System Architecture
-
-```
-        ┌─────────────────────┐
-        │  NE555 Generator    │
-        │  (PWM Source)       │
-        └─────────┬───────────┘
-                  │ Square Wave
-                  ▼
-        ┌─────────────────────┐
-        │ ESP32 Oscilloscope  │
-        │ ADC Sampling Engine │
-        └─────────┬───────────┘
-                  │ Processed Data
-                  ▼
-        ┌─────────────────────┐
-        │ OLED / Serial Plot  │
-        │ Waveform Display    │
-        └─────────────────────┘
-```
-
----
-
-# ⚡ NE555 PWM Signal Generator
-
-## 📌 Overview
-
-A classic **NE555 timer in astable mode** generating adjustable PWM signals.
 
 ## ⚙️ Features
 
-| Feature                  | Description             |
-| ------------------------ | ----------------------- |
-| 🎛️ Adjustable frequency | Potentiometer control   |
-| ⚡ PWM output             | Square wave signal      |
-| 🔌 ESP32 compatible      | With voltage protection |
-| 📊 Test signal source    | For oscilloscope input  |
+* Adjustable frequency using potentiometer
+* PWM (square wave) output
+* Compatible with ESP32 and other microcontrollers
+* Real-time signal measurement (frequency & duty cycle)
 
-## 🔌 NE555 Pinout
+---
 
-| Pin | Function                     |
-| --- | ---------------------------- |
-| 1   | GND                          |
-| 2   | Trigger                      |
-| 3   | Output → ESP32 input         |
-| 4   | Reset → VCC                  |
-| 5   | Control (optional capacitor) |
-| 6   | Threshold                    |
-| 7   | Discharge (RC network)       |
-| 8   | VCC                          |
+## 🧠 How It Works
 
-## ⏱️ Timing Network
+The **NE555 timer** operates in **astable mode**, continuously switching between HIGH and LOW states.
+
+* The timing is controlled by resistors and a capacitor
+* A potentiometer adjusts the charge/discharge time
+* This directly affects frequency and duty cycle
+
+---
+
+## 🔌 Wiring Diagram
+
+👉 **Tinkercad Schematic (NE555 only):**
+[https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo](https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo)
+
+### NE555 Pin Connections (Clean Layout)
+
+```
+Pin 1  → GND
+Pin 2  → Connected to Pin 6 (Trigger)
+Pin 3  → OUTPUT → ESP32 GPIO 14
+Pin 4  → VCC
+Pin 5  → Optional capacitor to GND
+Pin 6  → Connected to Pin 2 (Threshold)
+Pin 7  → Discharge → Resistor → VCC
+Pin 8  → VCC
+```
+
+### Timing Components
 
 ```
 VCC
- │
+ |
 [R1]
- │
- ├── Pin 7
- │
+ |
+ +------ Pin 7 (Discharge)
+ |
 [Potentiometer]
- │
- ├── Pin 6 + Pin 2
- │
+ |
+ +------ Pin 6 & Pin 2
+ |
 [C]
- │
+ |
 GND
+
+-------> Pin 7 (Discharge)
+|
+[Potentiometer]
+|
++-------> Pin 6 (Threshold)
+|         Pin 2 (Trigger)
+|
+[C]
+|
+GND
+
+Pin 1 → GND
+Pin 2 → Threshold
+Pin 3 → OUTPUT → ESP32 GPIO
+Pin 4 → VCC
+Pin 5 → (optional capacitor to GND)
+Pin 6 → Threshold
+Pin 7 → Discharge
+Pin 8 → VCC
+
+-------> Pin 7 (Discharge)
+         |
+        [Potentiometer]
+         |
+         +-------> Pin 6 (Threshold)
+         |         Pin 2 (Trigger)
+         |
+        [C]
+         |
+        GND
+
+Pin 1 → GND
+Pin 2 → Threshold
+Pin 3 → OUTPUT → ESP32 GPIO
+Pin 4 → VCC
+Pin 5 → (optional capacitor to GND)
+Pin 6 → Threshold
+Pin 7 → Discharge
+Pin 8 → VCC
 ```
 
 ---
 
-# 📈 ESP32 Digital Oscilloscope
+## 🖼️ Circuit Preview
 
-## 📌 Overview
-
-A **real-time waveform visualization system** using ESP32 ADC sampling.
-
-## ⚙️ Features
-
-| Feature                 | Description           |
-| ----------------------- | --------------------- |
-| 📡 Analog input capture | ADC sampling          |
-| 📊 Waveform plotting    | Real-time display     |
-| 🔄 Zoom control         | Time scale adjustment |
-| ⏸ Freeze function       | Hold waveform         |
-
-## 🔌 ADC Input Protection
-
-⚠️ ESP32 max input = 3.3V
-
-```
-Vin ──[R1]──┬── ESP32 ADC
-            |
-           [R2]
-            |
-           GND
-```
-
-## 🔗 Pin Mapping
-
-| Function     | GPIO    |
-| ------------ | ------- |
-| Signal Input | GPIO 34 |
-| Freeze       | GPIO 13 |
-| Zoom         | GPIO 12 |
-| OLED SDA     | GPIO 21 |
-| OLED SCL     | GPIO 22 |
+> Add your own circuit image here (screenshot from Tinkercad or real setup)
 
 ---
 
-# 🔗 Integration Setup
+## 📊 Signal Characteristics
 
-## ⚡ Connection Flow
-
-* NE555 OUTPUT → ESP32 GPIO 34 (ADC)
-* Common GND MUST be shared
-* Optional voltage divider if NE555 = 5V
-
-## 📡 Signal Pipeline
-
-```
-NE555 PWM Signal
-      ↓
-Voltage Protection
-      ↓
-ESP32 ADC Sampling
-      ↓
-Buffer Processing
-      ↓
-OLED / Serial Plot Display
-```
+| Parameter   | Description       |
+| ----------- | ----------------- |
+| Signal Type | Square Wave (PWM) |
+| Voltage     | 0V – VCC          |
+| Frequency   | Adjustable        |
+| Duty Cycle  | Adjustable        |
 
 ---
 
-# 🚀 Use Cases
+## 🔗 ESP32 Connection
 
-* 📡 PWM signal testing
-* 📊 Oscilloscope learning tool
-* 🧠 Embedded systems education
-* 🔧 Electronics prototyping lab
-* ⚙️ Sensor waveform analysis
+### Pin Mapping
 
----
+* **VCC** → 3.3V or 5V (depending on setup)
+* **GND** → Common ground (shared with NE555)
+* **GPIO 14** → NE555 Output (signal input)
+* **GPIO 13** → Freeze function (hold measurement)
+* **GPIO 12** → Zoom function (adjust display scale)
+* **GPIO 21 (SDA)** → OLED
+* **GPIO 22 (SCL)** → OLED
 
-# ⚠️ Limitations
+### Notes
 
-* Limited ADC speed (ESP32 constraint)
-* Not suitable for high-frequency RF signals
-* Resolution depends on noise + sampling stability
-* Basic oscilloscope (not professional grade)
-
----
-
-# 🔮 Future Improvements
-
-* FFT spectrum analysis 📊
-* Higher sampling via I2S ADC mode ⚡
-* Web-based oscilloscope UI 🌐
-* SD card data logging 💾
-* Multi-channel input 📡
+* Ensure common GND between NE555 and ESP32
+* If NE555 runs at 5V, use a voltage divider before GPIO 14
+* Buttons (freeze/zoom) should use pull-down or pull-up resistors
 
 ---
 
-# 👨‍💻 Author
+## 🚀 Use Cases
 
-Embedded Systems & Electronics Project
-
-⚡ NE555 Signal Generator + ESP32 Oscilloscope Ecosystem
+* PWM signal testing
+* Microcontroller interrupt testing
+* Frequency measurement projects
+* Duty cycle analysis
 
 ---
 
-<p align="center">
-⚡ Built for learning • experimentation • embedded signal analysis ⚡
-</p>
+## ⚠️ Notes
+
+* ESP32 operates at **3.3V logic**
+* If NE555 runs at 5V, use a voltage divider
+* Add decoupling capacitor for stable operation
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+Created as an electronics & embedded systems project using NE555 and ESP32.
