@@ -178,7 +178,3 @@ This project is licensed under the MIT License.
 ## 👨‍💻 Author
 
 Created as an electronics & embedded systems project using NE555 and ESP32.
-
-
-## 👨‍💻 Author
-Created as an electronics & embedded systems project using NE555 and ESP32.
