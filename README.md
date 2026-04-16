@@ -71,7 +71,6 @@ VCC
 [C]
  |
 GND
-```
 
 -------> Pin 7 (Discharge)
 |
