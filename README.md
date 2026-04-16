@@ -92,8 +92,6 @@ Pin 6 → Threshold
 Pin 7 → Discharge
 Pin 8 → VCC
 
-```
-
 -------> Pin 7 (Discharge)
          |
         [Potentiometer]
