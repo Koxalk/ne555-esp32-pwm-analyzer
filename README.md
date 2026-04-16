@@ -163,19 +163,6 @@ Pin 8 → VCC
 
 ---
 
-## 📁 Project Structure
-
-```
-.
-├── README.md
-├── images/
-│   └── circuit.png
-├── src/
-│   └── esp32_code.ino
-```
-
----
-
 ## ⚠️ Notes
 
 * ESP32 operates at **3.3V logic**
