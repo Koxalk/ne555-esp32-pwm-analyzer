@@ -160,4 +160,4 @@ ESP32 Digital Oscilloscope
 
 ---
 
-⚡ Built for learning, experimentation, and signal visualization ⚡
+⚡ Built for learning, experimentation, and signal visualization
