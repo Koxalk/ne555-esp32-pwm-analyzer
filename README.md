@@ -1,10 +1,10 @@
-# ⚡ NE555 PWM Signal Generator
+# 📈 ESP32 Oscilloscope Project
 
 <p align="center">
 
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-ESP32-blue?style=for-the-badge)
-![Type](https://img.shields.io/badge/type-Analog%20%2B%20Digital-orange?style=for-the-badge)
+![Type](https://img.shields.io/badge/type-Digital%20Oscilloscope-orange?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-Active-success?style=for-the-badge)
 
 </p>
@@ -13,153 +13,151 @@
 
 ## 🌑 Overview
 
-A modern **NE555 astable PWM generator** used to generate square waves and measure frequency & duty cycle using an ESP32.
+A **low-cost digital oscilloscope system** based on the **ESP32**, capable of reading analog signals and visualizing waveforms in real time.
+
+It is designed for educational and electronics prototyping use.
 
 <p align="center">
-⚡ Generate → 📡 Measure → 📊 Analyze → 🖥️ Display
+📡 Signal Input → ⚡ ADC Sampling → 📊 Processing → 🖥️ Visualization
 </p>
 
 ---
 
 ## 🧾 Table of Contents
 
-* ⚡ Overview
-* ⚙️ Features
-* 🧠 How It Works
-* 🔌 Circuit
-* 🧷 NE555 Pinout
-* 📊 Signal Characteristics
-* 🔗 ESP32 Connections
-* 🚀 Use Cases
-* ⚠️ Notes
-* 👨‍💻 Author
+* Overview
+* Features
+* How It Works
+* Hardware Setup
+* Circuit Diagram
+* Signal Flow
+* ESP32 Pin Mapping
+* Display / UI
+* Use Cases
+* Limitations
+* Author
 
 ---
 
 ## ⚙️ Features
 
-| Feature                  | Description            |
-| ------------------------ | ---------------------- |
-| 🎛️ Adjustable frequency | Potentiometer control  |
-| ⚡ PWM output             | Square wave generation |
-| 🔌 ESP32 compatible      | 3.3V logic support     |
-| 📊 Real-time measurement | Frequency & duty cycle |
-| 🖥️ OLED support         | Optional display       |
+| Feature                  | Description              |
+| ------------------------ | ------------------------ |
+| 📡 Analog signal input   | Reads external waveforms |
+| 📊 Real-time plotting    | Live waveform display    |
+| ⚡ ESP32 ADC sampling     | Fast analog read         |
+| 🖥️ OLED / TFT support   | Optional visualization   |
+| 🔄 Adjustable time scale | Zoom in/out signal       |
 
 ---
 
 ## 🧠 How It Works
 
-The NE555 operates in astable mode:
+The system uses the ESP32 ADC to sample incoming analog signals:
 
-* Capacitor charges → output HIGH
-* Capacitor discharges → output LOW
-* Potentiometer controls timing
-
-Result: adjustable PWM signal
+* Signal enters ADC pin
+* ESP32 samples at fixed intervals
+* Data is buffered
+* Waveform is plotted on display or serial plotter
 
 ---
 
-## 🔌 Circuit
+## 🔌 Hardware Setup
 
-### Tinkercad Simulation
+### Required Components
 
-[https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo](https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo)
+* ESP32 development board
+* Input signal source (e.g. NE555, function generator)
+* Optional OLED (SSD1306) or TFT display
+* Resistors for voltage protection
 
-### Timing Network
+---
+
+## ⚠️ Important Input Protection
+
+ESP32 ADC max voltage = **3.3V**
+
+👉 If input signal > 3.3V, use voltage divider:
 
 ```
-      VCC
-       │
-      [R1]
-       │
-       ├──── Pin 7
-       │
- [Potentiometer]
-       │
-       ├──── Pin 6 + Pin 2
-       │
-      [ C ]
-       │
-      GND
+Vin ──[ R1 ]──┬──→ ESP32 ADC Pin
+              |
+             [R2]
+              |
+             GND
 ```
 
 ---
 
-## 🧷 NE555 Pinout
+## 🔌 ESP32 Pin Mapping
 
-| Pin | Name      | Function           |
-| --- | --------- | ------------------ |
-| 1   | GND       | Ground             |
-| 2   | Trigger   | Threshold input    |
-| 3   | Output    | PWM output → ESP32 |
-| 4   | Reset     | VCC                |
-| 5   | Control   | Optional capacitor |
-| 6   | Threshold | Connected to Pin 2 |
-| 7   | Discharge | Timing control     |
-| 8   | VCC       | Power supply       |
+| Function      | GPIO          |
+| ------------- | ------------- |
+| Signal Input  | GPIO 34 (ADC) |
+| Freeze Button | GPIO 13       |
+| Zoom Button   | GPIO 12       |
+| OLED SDA      | GPIO 21       |
+| OLED SCL      | GPIO 22       |
 
 ---
 
-## 📊 Signal Characteristics
+## 📊 Signal Flow
 
-| Parameter  | Value             |
-| ---------- | ----------------- |
-| Type       | Square wave (PWM) |
-| Voltage    | 0V – VCC          |
-| Frequency  | Adjustable        |
-| Duty cycle | Adjustable        |
+```
+Analog Signal
+     ↓
+Voltage Protection (Divider)
+     ↓
+ESP32 ADC Sampling
+     ↓
+Buffer / Processing
+     ↓
+Display (OLED / Serial Plot)
+```
 
 ---
 
-## 🔗 ESP32 Connections
+## 🖼️ Circuit Diagram
 
-### Power
+📌 Add your images here:
 
-* VCC → 3.3V / 5V
-* GND → Common ground
+* ![Circuit Setup](images/circuit.png)
+* ![Breadboard](images/breadboard.png)
+* ![Final Build](images/final.png)
 
-### Signal
+---
 
-* GPIO 14 → NE555 output
+## 📈 Display / UI
 
-### Optional
-
-* GPIO 13 → Freeze
-* GPIO 12 → Zoom
-
-### OLED (I2C)
-
-* SDA → GPIO 21
-* SCL → GPIO 22
-
-⚠️ Use voltage divider if NE555 runs at 5V
+* Waveform plotted in real time
+* Optional scaling (zoom in/out)
+* Freeze frame function
+* Serial Plotter support
 
 ---
 
 ## 🚀 Use Cases
 
-* PWM signal testing
+* Electronics signal debugging
+* PWM waveform analysis
+* Sensor signal visualization
 * Embedded systems learning
-* Frequency measurement
-* Electronics prototyping
 
 ---
 
-## ⚠️ Notes
+## ⚠️ Limitations
 
-* ESP32 = 3.3V logic only
-* Always share common GND
-* Add decoupling capacitor
-* Protect GPIO from 5V
+* Limited ADC sampling rate (ESP32 constraint)
+* Not suitable for high-frequency RF signals
+* Resolution depends on noise and sampling speed
 
 ---
 
 ## 👨‍💻 Author
 
-Electronics & Embedded Systems Project
-NE555 + ESP32 Signal Generator
+Embedded Systems & Electronics Project
+ESP32 Digital Oscilloscope
 
 ---
 
-⚡ Built for learning and experimentation ⚡
+⚡ Built for learning, experimentation, and signal visualization ⚡
