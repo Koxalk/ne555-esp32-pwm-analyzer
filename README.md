@@ -66,6 +66,9 @@ Result: adjustable PWM signal
 
 [check here](https://www.tinkercad.com/things/1M5ezg14CPK-copy-of-copy-of-copy-of-magnificent-snaget-tumelo)
 
+# ESP32 OSCILLOSCOPE 
+[](https://github.com/Koxalk/ne555-esp32-pwm-analyzer/blob/main/IMG_20260417_163247131.jpg)
+
 ### Timing Network
 
 ```
