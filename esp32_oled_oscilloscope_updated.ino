@@ -9,9 +9,9 @@ void setup();
 void loop();
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-const int signalPin = 14;
-const int freezePin = 12;
-const int zoomPin = 13;
+const int signalPin = 2;
+const int freezePin = 3;
+const int zoomPin = 4;
 
 bool isFrozen = false;
 int zoomSteps[] = {10, 50, 100, 500, 1000, 2000};
@@ -21,6 +21,8 @@ int values[128];
 void setup()
 {
   Serial.begin(115200);
+
+  Wire.begin(8,9);
 
   // Pins with internal resistors
   pinMode(signalPin, INPUT_PULLDOWN);
