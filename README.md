@@ -69,6 +69,10 @@ Result: adjustable PWM signal
 # ESP32 OSCILLOSCOPE 
 ![](https://github.com/Koxalk/ne555-esp32-pwm-analyzer/blob/main/IMG_20260417_163247131.jpg)
 
+#SOLDERED
+
+![]()
+
 ### Timing Network
 
 ```
