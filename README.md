@@ -71,7 +71,7 @@ Result: adjustable PWM signal
 
 #SOLDERED
 
-![]()
+![](https://github.com/Koxalk/ne555-esp32-pwm-analyzer/blob/main/IMG_20260522_222323714.jpg)
 
 ### Timing Network
 
